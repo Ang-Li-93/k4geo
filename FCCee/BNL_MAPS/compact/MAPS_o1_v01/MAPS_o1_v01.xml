@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="MAPS_o1_v01 Master"
+    title="BNL_MAPS o1_v01 Master (ALLEGRO + 20um MAPS outer vertex)"
+    author="LDRD WP1 - AI-Enabled Tracking Demonstrator for FCC-ee"
+    url="no"
+    status="development"
+    version="1.0">
+    <comment>
+      ALLEGRO_o1_v03 detector with ONLY the outer two vertex barrel layers (VTXOB)
+      changed to a square 20x20 um MAPS pixel pitch. The single swap is the vertex
+      include -> FCCee/BNL_MAPS/compact/MAPS_o1_v01/VertexComplete_o1_v01.xml; every
+      other subdetector (DectDimensions, beampipe, LumiCal, drift chamber, silicon
+      wrapper, ECal/HCal, muon tagger) is reused IN PLACE from ALLEGRO_o1_v03 /
+      IDEA_o1_v04 (both kept pristine). Relative include depth matches the original
+      ALLEGRO location so '../../../' refs resolve identically.
+    </comment>
+  </info>
+
+  <include ref="${DD4hepINSTALL}/DDDetectors/compact/detector_types.xml" />
+
+  <includes>
+    <gdmlFile ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/elements.xml"/>
+    <gdmlFile ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/materials.xml"/>
+  </includes>
+
+  <define>
+    <constant name="world_size" value="25*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+  </define>
+
+  <!-- Shared detector dimensions / IDs (VTXOB_r_*, GlobalTrackerReadoutID, ...) -->
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/DectDimensions.xml" />
+
+  <!-- shape based model of the beam pipe ('../../../' = FCCee/, same as ALLEGRO) -->
+  <include ref="../../../MDI/compact/MDI_o1_v00/Beampipe_o4_v05.xml" />
+  <include ref="../../../MDI/compact/MDI_o1_v00/BeamInstrumentation_o1_v01.xml" />
+
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/LumiCal.xml"/>
+
+  <!-- *** BNL_MAPS swap: 20um outer-vertex variant (the ONLY change vs ALLEGRO_o1_v03) *** -->
+  <include ref="./VertexComplete_o1_v01.xml"/>
+
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/DriftChamber_o1_v02.xml"/>
+  <include ref="../../../IDEA/compact/IDEA_o1_v04/SiliconWrapper_o1_v02.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/ECalBarrel_thetamodulemerged.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/HCalBarrel_TileCal_v03.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/ECalEndcaps_Turbine_o1_v03.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/HCalEndcaps_ThreeParts_TileCal_v03.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/MuonTaggerPhiTheta.xml"/>
+
+  <plugins>
+    <plugin name="InstallSurfaceManager"/>
+  </plugins>
+
+</lccdd>
