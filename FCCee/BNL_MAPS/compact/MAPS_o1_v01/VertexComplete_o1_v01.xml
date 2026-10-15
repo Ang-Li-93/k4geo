@@ -171,10 +171,22 @@
         <constant name="VTXO_hybrid_dx" value="0.1*mm"/>
 
         <comment> VTXOB layout parameters </comment>
-        <constant name="VTXOB_nStaves1" value="23"/>
-        <constant name="VTXOB_nStaves2" value="51"/>
-        <constant name="VTXOB_nModules1" value="8"/>           
-        <constant name="VTXOB_nModules2" value="16"/>          
+        <comment>
+          BNL_MAPS LDRD radius-variant scan: nStaves and nModules auto-scale
+          LINEARLY with the layer radius, anchored so that the baseline radii
+          (VTXOB_r_min_layer=130mm, VTXOB_r_max_layer=315mm) reproduce EXACTLY
+          the engineered counts (23/51 staves, 8/16 modules) -> every existing
+          baseline master (MAPS_o1_v01.xml, MAPS_o1_v01_BIB{,_v2}.xml) is left
+          byte-identical. nModules proportional to r keeps the polar (theta)
+          acceptance constant across radii (halfLength ~ r); nStaves proportional
+          to r keeps the phi coverage (hermeticity) constant. floor(x+0.5)=round.
+          A variant is produced solely by forking DectDimensions with different
+          VTXOB_r_{min,max}_layer -- these formulas then follow automatically.
+        </comment>
+        <constant name="VTXOB_nStaves1" value="floor(23.*VTXOB_r_min_layer/(130.*mm)+0.5)"/>
+        <constant name="VTXOB_nStaves2" value="floor(51.*VTXOB_r_max_layer/(315.*mm)+0.5)"/>
+        <constant name="VTXOB_nModules1" value="floor(8.*VTXOB_r_min_layer/(130.*mm)+0.5)"/>
+        <constant name="VTXOB_nModules2" value="floor(16.*VTXOB_r_max_layer/(315.*mm)+0.5)"/>
         <constant name="VTXOB_mod_z_spacing" value="0.2*mm"/> <comment> Should be done for VTXD as well! </comment>
 
         <constant name="VTXOB_halfLength1" value="(VTXOB_nModules1*VTXO_mod_z+(VTXOB_nModules1-1)*VTXOB_mod_z_spacing)/2.0"/>

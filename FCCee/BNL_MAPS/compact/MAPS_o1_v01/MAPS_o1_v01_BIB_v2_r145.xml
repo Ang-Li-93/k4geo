@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lccdd xmlns:compact="http://www.lcsim.org/schemas/compact/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xs:noNamespaceSchemaLocation="http://www.lcsim.org/schemas/compact/1.0/compact.xsd">
+
+  <info name="MAPS_o1_v01_BIB_v2 Master"
+    title="BNL_MAPS o1_v01 BIB variant r145 (r_in=145,r_out=330), mdi_v2"
+    author="LDRD WP1 - AI-Enabled Tracking Demonstrator for FCC-ee"
+    url="no"
+    status="development"
+    version="2.0">
+    <comment>
+      MAPS_o1_v01 with the mdi_v2 machine-detector interface (A. Ciarma,
+      github.com/aciarma/k4geo branch mdi_v2): MDI_o1_CADBased_v02_collection
+      = v04 CAD beam pipe (new SR masks Pipe_01042026 STLs), LCC 106.2 Z-optics
+      final-focus quads (FFQuads_params_LCC_106-2-2_Z), nonlocal antisolenoid
+      field map (fieldmaps/field_map_main_off_comp_on_01may26_sorted.root),
+      world = Vacuum. Mirrors ALLEGRO_o1_v03_CAD.xml (the geometry of the
+      central ALLEGRO_o1_v03_mdi_v2_CAD production) with the SINGLE swap of
+      the vertex include -> BNL_MAPS 20um VertexComplete_o1_v01. Use with
+      maps_bib_steer.py and the LCC V106.2 pairs. Requires STLs in
+      FCCee/MDI/compact/stl_files/{Pipe_240430,Pipe_01042026}/ and the
+      fieldmap above (all fetched 2026-07-15).
+    </comment>
+  </info>
+
+  <include ref="${DD4hepINSTALL}/DDDetectors/compact/detector_types.xml" />
+
+  <includes>
+    <gdmlFile ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/elements.xml"/>
+    <gdmlFile ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/materials.xml"/>
+  </includes>
+
+  <define>
+    <constant name="world_size" value="25*m"/>
+    <constant name="world_x" value="world_size"/>
+    <constant name="world_y" value="world_size"/>
+    <constant name="world_z" value="world_size"/>
+  </define>
+
+  <include ref="./DectDimensions_r145.xml" />
+
+  <!-- *** mdi_v2: engineered CAD MDI for the LCC era (beam instrumentation
+       included inside the collection); world = vacuum *** -->
+  <include ref="../../../MDI/compact/MDI_o1_CADBased_v02/MDI_o1_CADBased_v02_collection.xml" />
+  <world material="Vacuum"/>
+
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/LumiCal.xml"/>
+
+  <!-- *** BNL_MAPS swap: 20um outer-vertex variant (the ONLY change vs
+       ALLEGRO_o1_v03_CAD.xml) *** -->
+  <include ref="./VertexComplete_o1_v01.xml"/>
+
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/DriftChamber_o1_v02.xml"/>
+  <include ref="../../../IDEA/compact/IDEA_o1_v04/SiliconWrapper_o1_v02.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/ECalBarrel_thetamodulemerged.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/HCalBarrel_TileCal_v03.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/ECalEndcaps_Turbine_o1_v03.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/HCalEndcaps_ThreeParts_TileCal_v03.xml"/>
+  <include ref="../../../ALLEGRO/compact/ALLEGRO_o1_v03/MuonTaggerPhiTheta.xml"/>
+
+  <plugins>
+    <plugin name="InstallSurfaceManager"/>
+  </plugins>
+
+</lccdd>
